@@ -1,0 +1,180 @@
+{
+  "task": "Use the Experiment 2 rubric to prepare code and report deliverables.",
+  "system_prompt_path": "F:\\daily\\agent-experiment\\prompts\\system_prompt.md",
+  "tool_specs": [
+    {
+      "name": "read_context",
+      "description": "Read a local experiment context file.",
+      "input_schema": {
+        "path": "Path to a UTF-8 markdown context file."
+      }
+    },
+    {
+      "name": "extract_rubric",
+      "description": "Extract deadline, deliverables, evaluation, and reflection requirements.",
+      "input_schema": {
+        "content": "Raw rubric text."
+      }
+    },
+    {
+      "name": "plan_report",
+      "description": "Plan a short report that aligns with the rubric.",
+      "input_schema": {
+        "rubric": "Rubric object returned by extract_rubric."
+      }
+    },
+    {
+      "name": "draft_reflection",
+      "description": "Draft a concise AI-use reflection around a specific technical hurdle.",
+      "input_schema": {
+        "hurdle": "Specific AI failure or limitation.",
+        "fix": "Exact engineering response used to resolve it."
+      }
+    },
+    {
+      "name": "validate_repository",
+      "description": "Check whether required repository files exist.",
+      "input_schema": {
+        "root": "Repository root path."
+      }
+    }
+  ],
+  "trace": [
+    {
+      "index": 1,
+      "tool": "read_context",
+      "arguments": {
+        "path": "F:\\daily\\agent-experiment\\context\\experiment2_rubric.md"
+      },
+      "result": {
+        "path": "F:\\daily\\agent-experiment\\context\\experiment2_rubric.md",
+        "characters": 699,
+        "content": "# Experiment 2 Rubric\n\nDue: 2026/06/20 23:59:59\n\n## Deliverables\n\n- Code Repository: Agent logic and tool definitions.\n- Brief Report: No more than 5 pages, including 3 to 4 execution screenshots and a short reflection on using AI in development.\n\n## Evaluation\n\n- System Mechanics and Tooling: Code repository including all prompts, 40 points.\n- Agent Execution: Report screenshots, 40 points.\n- Reflection: Report text, 20 points.\n\n## Reflection Requirement\n\nThe reflection should be concise and honest. It should identify a specific technical hurdle the AI faced, such as struggling with protocol syntax or hallucinating arguments, and explain exactly how the student engineered a way out of it.\n"
+      }
+    },
+    {
+      "index": 2,
+      "tool": "extract_rubric",
+      "arguments": {
+        "content": "# Experiment 2 Rubric\n\nDue: 2026/06/20 23:59:59\n\n## Deliverables\n\n- Code Repository: Agent logic and tool definitions.\n- Brief Report: No more than 5 pages, including 3 to 4 execution screenshots and a short reflection on using AI in development.\n\n## Evaluation\n\n- System Mechanics and Tooling: Code repository including all prompts, 40 points.\n- Agent Execution: Report screenshots, 40 points.\n- Reflection: Report text, 20 points.\n\n## Reflection Requirement\n\nThe reflection should be concise and honest. It should identify a specific technical hurdle the AI faced, such as struggling with protocol syntax or hallucinating arguments, and explain exactly how the student engineered a way out of it.\n"
+      },
+      "result": {
+        "deadline": "2026/06/20 23:59:59",
+        "deliverables": [
+          "Code Repository: Agent logic and tool definitions.",
+          "Brief Report: No more than 5 pages, including 3 to 4 execution screenshots and a short reflection on using AI in development."
+        ],
+        "evaluation": [
+          "System Mechanics and Tooling: Code repository including all prompts, 40 points.",
+          "Agent Execution: Report screenshots, 40 points.",
+          "Reflection: Report text, 20 points."
+        ],
+        "reflection_requirement": "The reflection should be concise and honest. It should identify a specific technical hurdle the AI faced, such as struggling with protocol syntax or hallucinating arguments, and explain exactly how the student engineered a way out of it."
+      }
+    },
+    {
+      "index": 3,
+      "tool": "plan_report",
+      "arguments": {
+        "rubric": {
+          "deadline": "2026/06/20 23:59:59",
+          "deliverables": [
+            "Code Repository: Agent logic and tool definitions.",
+            "Brief Report: No more than 5 pages, including 3 to 4 execution screenshots and a short reflection on using AI in development."
+          ],
+          "evaluation": [
+            "System Mechanics and Tooling: Code repository including all prompts, 40 points.",
+            "Agent Execution: Report screenshots, 40 points.",
+            "Reflection: Report text, 20 points."
+          ],
+          "reflection_requirement": "The reflection should be concise and honest. It should identify a specific technical hurdle the AI faced, such as struggling with protocol syntax or hallucinating arguments, and explain exactly how the student engineered a way out of it."
+        }
+      },
+      "result": {
+        "page_limit": "no more than 5 pages",
+        "sections": [
+          {
+            "title": "Agent code repository",
+            "purpose": "Provide the GitHub repo and point to prompts, context, tools, and agent logic."
+          },
+          {
+            "title": "Agent design",
+            "purpose": "Explain the main function, registered tools, and context integration in under 500 words."
+          },
+          {
+            "title": "Agent execution",
+            "purpose": "Show 3 to 4 screenshots from a real run and explain what each step proves."
+          },
+          {
+            "title": "AI-assisted development reflection",
+            "purpose": "Describe one concrete AI hurdle and the exact engineering fix."
+          }
+        ],
+        "rubric_alignment": {
+          "system_mechanics": "System Mechanics and Tooling: Code repository including all prompts, 40 points.",
+          "execution": "Agent Execution: Report screenshots, 40 points.",
+          "reflection": "Reflection: Report text, 20 points."
+        }
+      }
+    },
+    {
+      "index": 4,
+      "tool": "draft_reflection",
+      "arguments": {
+        "hurdle": "AI 曾经把工具参数和文档渲染步骤混在一起，导致输出看似完整但不可复现",
+        "fix": "先把工具 schema 固定在代码里，再用 JSON execution trace 和 DOCX 渲染结果逐项核对"
+      },
+      "result": {
+        "hurdle": "AI 曾经把工具参数和文档渲染步骤混在一起，导致输出看似完整但不可复现",
+        "fix": "先把工具 schema 固定在代码里，再用 JSON execution trace 和 DOCX 渲染结果逐项核对",
+        "text": "在完成实验时，AI 最明显的问题不是不会写代码，而是会把工具调用协议想得过于自由。具体表现是：AI 曾经把工具参数和文档渲染步骤混在一起，导致输出看似完整但不可复现。我没有直接相信第一次输出，而是把需求拆成可验证的小步骤，先查看项目结构和模板，再固定工具输入格式，最后用 demo 输出和文档渲染结果反复检查。解决办法是：先把工具 schema 固定在代码里，再用 JSON execution trace 和 DOCX 渲染结果逐项核对。这个过程让我意识到，AI 更适合做候选方案和初稿，最终质量仍然需要通过明确约束、可复现执行和人工验收来保证。"
+      }
+    },
+    {
+      "index": 5,
+      "tool": "validate_repository",
+      "arguments": {
+        "root": "F:\\daily\\agent-experiment"
+      },
+      "result": {
+        "root": "F:\\daily\\agent-experiment",
+        "checks": [
+          {
+            "path": "README.md",
+            "exists": true
+          },
+          {
+            "path": "prompts/system_prompt.md",
+            "exists": true
+          },
+          {
+            "path": "context/experiment2_rubric.md",
+            "exists": true
+          },
+          {
+            "path": "src/agent_experiment/agent.py",
+            "exists": true
+          },
+          {
+            "path": "src/agent_experiment/tools.py",
+            "exists": true
+          },
+          {
+            "path": "scripts/run_demo.py",
+            "exists": true
+          },
+          {
+            "path": "scripts/render_execution_screens.py",
+            "exists": true
+          },
+          {
+            "path": "tests/test_agent.py",
+            "exists": true
+          }
+        ],
+        "complete": true
+      }
+    }
+  ],
+  "final_answer": "Deadline: 2026/06/20 23:59:59\nRepository status: complete\nReport sections: Agent code repository, Agent design, Agent execution, AI-assisted development reflection\nReflection focus: AI 曾经把工具参数和文档渲染步骤混在一起，导致输出看似完整但不可复现\nNext action: submit the repository and the filled short report with execution screenshots."
+}
