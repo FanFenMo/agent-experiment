@@ -24,7 +24,13 @@ python .\scripts\render_execution_screens.py .\demo_outputs\experiment2_run.json
 python -m unittest discover -s tests
 ```
 
-运行后，终端会显示 Agent 的每一步 tool 调用，`demo_outputs/experiment2_run.json` 会保存完整 execution trace，`reports/assets/` 会生成用于报告的运行截图。
+运行后，终端会显示简洁的 Agent 运行摘要，`demo_outputs/experiment2_run.json` 会保存完整 execution trace，`reports/assets/` 会生成用于报告的运行截图。
+
+默认 demo 输出是简洁摘要，适合课堂演示时直接查看结果。如果需要在终端展开完整 tool 参数和结果，可以运行：
+
+```powershell
+python .\scripts\run_demo.py --verbose
+```
 
 ## Agent 功能概述
 
