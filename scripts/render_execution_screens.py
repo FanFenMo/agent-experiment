@@ -18,8 +18,8 @@ ACCENT = (86, 204, 157)
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Render demo trace into report screenshots.")
-    parser.add_argument("trace", help="Path to experiment2_run.json.")
+    parser = argparse.ArgumentParser(description="把 demo trace 渲染成报告截图。")
+    parser.add_argument("trace", help="experiment2_run.json 的路径。")
     parser.add_argument("--output-dir", default="reports/assets")
     args = parser.parse_args()
 
@@ -33,17 +33,17 @@ def main() -> None:
 
     pages = [
         (
-            "Screenshot 1 - Agent startup and registered tools",
+            "截图 1：Agent 启动与 tool 注册",
             _startup_lines(data),
         ),
         (
-            "Screenshot 2 - Rubric extraction and report planning",
+            "截图 2：rubric 提取与报告规划",
             _trace_lines(data, ["read_context", "extract_rubric", "plan_report"]),
         ),
         (
-            "Screenshot 3 - Reflection drafting and repository validation",
+            "截图 3：反思草稿与仓库检查",
             _trace_lines(data, ["draft_reflection", "validate_repository"])
-            + ["", "Final answer:", *_final_answer_lines(data)],
+            + ["", "最终答复：", *_final_answer_lines(data)],
         ),
     ]
 
@@ -52,14 +52,14 @@ def main() -> None:
         draw = ImageDraw.Draw(image)
         draw.rounded_rectangle((36, 34, WIDTH - 36, HEIGHT - 34), radius=18, fill=PANEL)
         draw.text((72, 70), title, fill=ACCENT, font=font_title)
-        draw.text((72, 122), "agent-experiment demo run", fill=MUTED, font=font_small)
+        draw.text((72, 122), "agent-experiment demo 运行记录", fill=MUTED, font=font_small)
         y = 175
         for line in lines:
             for wrapped in _wrap(line):
                 draw.text((82, y), wrapped, fill=TEXT, font=font_body)
-                y += 34
+                y += 29
             if line == "":
-                y += 10
+                y += 6
         output_path = output_dir / f"execution_{index}.png"
         image.save(output_path)
         print(output_path)
@@ -67,11 +67,11 @@ def main() -> None:
 
 def _startup_lines(data: dict) -> list[str]:
     lines = [
-        "Experiment Delivery Agent",
-        f"Task: {data['task']}",
-        f"System prompt: {data['system_prompt_path']}",
+        "实验交付助手 Agent",
+        f"任务：{data['task']}",
+        f"系统 prompt：{data['system_prompt_path']}",
         "",
-        "Registered tools:",
+        "已注册 tools：",
     ]
     lines.extend(
         f"- {tool['name']}: {tool['description']}" for tool in data["tool_specs"]
@@ -84,10 +84,10 @@ def _trace_lines(data: dict, names: list[str]) -> list[str]:
     for item in data["trace"]:
         if item["tool"] not in names:
             continue
-        lines.append(f"[{item['index']}] tool: {item['tool']}")
-        lines.append("arguments:")
+        lines.append(f"[{item['index']}] tool：{item['tool']}")
+        lines.append("参数：")
         lines.extend(_dict_lines(_argument_summary(item)))
-        lines.append("result:")
+        lines.append("结果：")
         lines.extend(_dict_lines(_result_summary(item)))
         lines.append("")
     return lines
@@ -96,9 +96,9 @@ def _trace_lines(data: dict, names: list[str]) -> list[str]:
 def _argument_summary(item: dict) -> dict:
     arguments = item["arguments"].copy()
     if "content" in arguments:
-        arguments["content"] = "<rubric markdown text>"
+        arguments["content"] = "<rubric markdown 文本>"
     if "rubric" in arguments:
-        arguments["rubric"] = "<parsed rubric object>"
+        arguments["rubric"] = "<已解析的 rubric 对象>"
     return arguments
 
 
@@ -106,24 +106,24 @@ def _result_summary(item: dict) -> dict:
     tool = item["tool"]
     result = item["result"]
     if tool == "read_context":
-        return {"path": result["path"], "characters": result["characters"]}
+        return {"路径": result["path"], "字符数": result["characters"]}
     if tool == "extract_rubric":
         return {
-            "deadline": result["deadline"],
-            "deliverables": len(result["deliverables"]),
-            "evaluation_items": len(result["evaluation"]),
+            "截止时间": result["deadline"],
+            "交付物数量": len(result["deliverables"]),
+            "评分项数量": len(result["evaluation"]),
         }
     if tool == "plan_report":
         return {
-            "page_limit": result["page_limit"],
-            "sections": [section["title"] for section in result["sections"]],
+            "页数限制": result["page_limit"],
+            "报告章节": [section["title"] for section in result["sections"]],
         }
     if tool == "draft_reflection":
-        return {"hurdle": result["hurdle"], "fix": result["fix"]}
+        return {"困难": result["hurdle"], "解决方式": result["fix"]}
     if tool == "validate_repository":
         return {
-            "complete": result["complete"],
-            "checked_files": len(result["checks"]),
+            "是否完整": result["complete"],
+            "已检查文件数": len(result["checks"]),
         }
     return result
 
@@ -141,9 +141,9 @@ def _final_answer_lines(data: dict) -> list[str]:
     lines = []
     for line in data["final_answer"].splitlines():
         if (
-            line.startswith("Report sections:")
-            or line.startswith("Reflection focus:")
-            or line.startswith("Next action:")
+            line.startswith("报告结构：")
+            or line.startswith("反思重点：")
+            or line.startswith("下一步：")
         ):
             continue
         lines.append(line)
@@ -159,7 +159,7 @@ def _clip(value: str, limit: int = 42) -> str:
 def _wrap(line: str) -> list[str]:
     if not line:
         return [""]
-    return textwrap.wrap(line, width=72, replace_whitespace=False) or [line]
+    return textwrap.wrap(line, width=78, replace_whitespace=False) or [line]
 
 
 def _fonts():
@@ -173,7 +173,7 @@ def _fonts():
     font_path = next(path for path in candidates if path.exists())
     return (
         ImageFont.truetype(str(font_path), 34),
-        ImageFont.truetype(str(font_path), 25),
+        ImageFont.truetype(str(font_path), 23),
         ImageFont.truetype(str(font_path), 20),
     )
 

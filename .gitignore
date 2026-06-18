@@ -12,3 +12,9 @@ dist/
 # Generated during local runs, but kept selectively when needed for the report.
 demo_outputs/*.tmp
 reports/rendered/
+
+# Microsoft Word temporary lock files.
+~$*.docx
+
+# Superseded report kept locally if it is open in Word.
+reports/综合实践（阶段1）-实验2-实验报告-已完成.docx

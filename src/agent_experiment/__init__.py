@@ -1,4 +1,4 @@
-"""Experiment Delivery Agent package."""
+"""实验交付助手 Agent package."""
 
 from .agent import ExperimentAgent
 

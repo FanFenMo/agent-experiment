@@ -20,14 +20,14 @@ class RubricToolTests(unittest.TestCase):
         self.assertEqual(rubric["deadline"], "2026/06/20 23:59:59")
         self.assertEqual(len(rubric["deliverables"]), 2)
         self.assertEqual(len(rubric["evaluation"]), 3)
-        self.assertIn("specific technical hurdle", rubric["reflection_requirement"])
+        self.assertIn("具体技术困难", rubric["reflection_requirement"])
 
 
 class AgentRunTests(unittest.TestCase):
     def test_agent_records_tool_trace(self) -> None:
         agent = ExperimentAgent(ROOT / "prompts" / "system_prompt.md")
         run = agent.run(
-            task="Prepare experiment deliverables.",
+            task="准备实验交付物。",
             context_path=ROOT / "context" / "experiment2_rubric.md",
             repo_root=ROOT,
         )
@@ -39,7 +39,7 @@ class AgentRunTests(unittest.TestCase):
             "draft_reflection",
             "validate_repository",
         ])
-        self.assertIn("Deadline: 2026/06/20 23:59:59", run.final_answer)
+        self.assertIn("截止时间：2026/06/20 23:59:59", run.final_answer)
 
 
 if __name__ == "__main__":

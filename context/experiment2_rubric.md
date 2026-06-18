@@ -1,18 +1,18 @@
-# Experiment 2 Rubric
+# 实验二 Rubric
 
-Due: 2026/06/20 23:59:59
+截止时间: 2026/06/20 23:59:59
 
-## Deliverables
+## 交付物
 
-- Code Repository: Agent logic and tool definitions.
-- Brief Report: No more than 5 pages, including 3 to 4 execution screenshots and a short reflection on using AI in development.
+- 代码仓库：包含 Agent 逻辑和 tool definitions。
+- 简短报告：不超过 5 页，包含 3 到 4 张运行截图，以及一段关于使用 AI 辅助开发的简短反思。
 
-## Evaluation
+## 评分项
 
-- System Mechanics and Tooling: Code repository including all prompts, 40 points.
-- Agent Execution: Report screenshots, 40 points.
-- Reflection: Report text, 20 points.
+- 系统机制与工具：代码仓库需包含所有 prompt，40 分。
+- Agent 执行效果：报告中的运行截图，40 分。
+- 个人反思：报告文字，20 分。
 
-## Reflection Requirement
+## 反思要求
 
-The reflection should be concise and honest. It should identify a specific technical hurdle the AI faced, such as struggling with protocol syntax or hallucinating arguments, and explain exactly how the student engineered a way out of it.
+反思要简洁、真实。需要指出 AI 遇到的一个具体技术困难，例如协议语法不稳定、参数编造、工具调用失败等，并说明自己具体如何通过工程化方式解决这个问题。

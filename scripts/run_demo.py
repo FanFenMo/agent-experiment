@@ -8,18 +8,18 @@ from agent_experiment import ExperimentAgent
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run the Experiment Delivery Agent demo.")
+    parser = argparse.ArgumentParser(description="运行实验交付助手 Agent demo。")
     parser.add_argument(
         "--output",
         default="demo_outputs/experiment2_run.json",
-        help="Path for the JSON execution trace.",
+        help="JSON execution trace 输出路径。",
     )
     args = parser.parse_args()
 
     repo_root = Path(__file__).resolve().parents[1]
     agent = ExperimentAgent(repo_root / "prompts" / "system_prompt.md")
     run = agent.run(
-        task="Use the Experiment 2 rubric to prepare code and report deliverables.",
+        task="根据实验二 rubric 准备代码仓库和实验报告交付物。",
         context_path=repo_root / "context" / "experiment2_rubric.md",
         repo_root=repo_root,
     )
@@ -31,26 +31,26 @@ def main() -> None:
         encoding="utf-8",
     )
 
-    print("Experiment Delivery Agent")
+    print("实验交付助手 Agent")
     print("=" * 72)
-    print(f"Task: {run.task}")
-    print(f"System prompt: {run.system_prompt_path}")
+    print(f"任务：{run.task}")
+    print(f"系统 prompt：{run.system_prompt_path}")
     print()
-    print("Registered tools:")
+    print("已注册 tools：")
     for spec in run.tool_specs:
         print(f"- {spec['name']}: {spec['description']}")
     print()
-    print("Execution trace:")
+    print("执行 trace：")
     for item in run.trace:
         print(f"[{item.index}] {item.tool}")
-        print(f"    arguments: {json.dumps(item.arguments, ensure_ascii=False)}")
+        print(f"    参数：{json.dumps(item.arguments, ensure_ascii=False)}")
         compact_result = _compact(item.result)
-        print(f"    result: {json.dumps(compact_result, ensure_ascii=False)}")
+        print(f"    结果：{json.dumps(compact_result, ensure_ascii=False)}")
     print()
-    print("Final answer:")
+    print("最终答复：")
     print(run.final_answer)
     print()
-    print(f"Saved trace: {output_path}")
+    print(f"trace 已保存：{output_path}")
 
 
 def _compact(value):

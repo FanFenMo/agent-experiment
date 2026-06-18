@@ -9,7 +9,7 @@ from docx.shared import Inches, Pt
 
 
 TEMPLATE = Path(r"F:\浏览器下载\EDGE下载\综合实践（阶段1）-实验2-实验报告模版.docx")
-OUTPUT = Path("reports/综合实践（阶段1）-实验2-实验报告-已完成.docx")
+OUTPUT = Path("reports/综合实践（阶段1）-实验2-实验报告-中文版.docx")
 
 
 def main() -> None:
@@ -23,29 +23,29 @@ def main() -> None:
 
     _heading(doc, "3. 请提供你的Agent代码存放的repo（请包含核心的prompt）：")
     _body(doc, "git@github.com:FanFenMo/agent-experiment.git")
-    _body(doc, "核心 prompt 位于 prompts/system_prompt.md；Agent 逻辑位于 src/agent_experiment/agent.py；工具定义位于 src/agent_experiment/tools.py。")
+    _body(doc, "核心 prompt 位于 prompts/system_prompt.md；Agent 逻辑位于 src/agent_experiment/agent.py；tool definitions 位于 src/agent_experiment/tools.py。")
 
     _heading(doc, "4. 请简要介绍你设计的Agent")
     _body(
         doc,
-        "我设计的 Agent 名为 Experiment Delivery Agent，是一个离线可运行的课程实验交付助手。"
+        "我设计的 Agent 是一个离线可运行的课程实验交付助手。"
         "它的主要功能是读取实验二 rubric，将截止时间、交付物、评分项和反思要求拆解成可执行的报告计划，"
-        "再检查仓库是否包含 prompt、context、工具定义、demo 脚本和测试文件。Agent 使用的工具包括 read_context、"
+        "再检查仓库是否包含 prompt、context、tool definitions、demo 脚本和测试文件。Agent 使用的 tool 包括 read_context、"
         "extract_rubric、plan_report、draft_reflection 和 validate_repository。上下文集成方式包括文件型 rubric context、"
-        "系统 prompt、工具 schema，以及 JSON execution trace。项目不依赖外部 API，因此老师可以在本地稳定复现实验运行过程。"
+        "系统 prompt、tool schema，以及 JSON execution trace。项目不依赖外部 API，因此老师可以在本地稳定复现实验运行过程。"
     )
 
     _heading(doc, "5. 请提供你的Agent运行时的说明")
     _body(
         doc,
         "运行方式是在仓库根目录设置 PYTHONPATH=src 后执行 scripts/run_demo.py。"
-        "demo 会先注册工具，再读取 context/experiment2_rubric.md，随后提取 rubric、规划报告、生成反思草稿并检查仓库完整性。"
+        "demo 会先注册 tool，再读取 context/experiment2_rubric.md，随后提取 rubric、规划报告、生成反思草稿并检查仓库完整性。"
         "运行记录保存在 demo_outputs/experiment2_run.json，下面三张截图来自同一次真实执行。"
     )
     _picture(
         doc,
         repo_root / "reports" / "assets" / "execution_1.png",
-        "图 1：Agent 启动后加载系统 prompt，并列出 5 个已注册工具。",
+        "图 1：Agent 启动后加载系统 prompt，并列出 5 个已注册 tool。",
     )
     _picture(
         doc,
@@ -55,7 +55,7 @@ def main() -> None:
     _picture(
         doc,
         repo_root / "reports" / "assets" / "execution_3.png",
-        "图 3：Agent 生成反思草稿并检查仓库文件，确认 required files complete。",
+        "图 3：Agent 生成反思草稿并检查仓库文件，确认必需文件完整。",
     )
 
     _heading(doc, "6. 简要介绍你在完成实验二过程中如何使用了大语言模型等AI技术帮助你完成实验任务")

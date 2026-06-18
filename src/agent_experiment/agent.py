@@ -99,12 +99,12 @@ class ExperimentAgent:
         missing = [
             item["path"] for item in repository["checks"] if not item["exists"]
         ]
-        repo_status = "complete" if repository["complete"] else f"missing: {missing}"
+        repo_status = "完整" if repository["complete"] else f"缺少文件: {missing}"
         section_titles = ", ".join(item["title"] for item in report_plan["sections"])
         return (
-            f"Deadline: {rubric['deadline']}\n"
-            f"Repository status: {repo_status}\n"
-            f"Report sections: {section_titles}\n"
-            f"Reflection focus: {reflection['hurdle']}\n"
-            "Next action: submit the repository and the filled short report with execution screenshots."
+            f"截止时间：{rubric['deadline']}\n"
+            f"仓库状态：{repo_status}\n"
+            f"报告结构：{section_titles}\n"
+            f"反思重点：{reflection['hurdle']}\n"
+            "下一步：提交代码仓库和已填写、包含运行截图的实验报告。"
         )

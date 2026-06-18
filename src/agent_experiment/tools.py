@@ -35,13 +35,13 @@ def read_context(args: dict[str, Any]) -> dict[str, Any]:
 
 def extract_rubric(args: dict[str, Any]) -> dict[str, Any]:
     content = args["content"]
-    due = _line_value(content, "Due:")
+    due = _line_value(content, "截止时间:")
     return {
         "deadline": due,
-        "deliverables": _bullets_after_heading(content, "## Deliverables"),
-        "evaluation": _bullets_after_heading(content, "## Evaluation"),
+        "deliverables": _bullets_after_heading(content, "## 交付物"),
+        "evaluation": _bullets_after_heading(content, "## 评分项"),
         "reflection_requirement": _paragraph_after_heading(
-            content, "## Reflection Requirement"
+            content, "## 反思要求"
         ),
     }
 
@@ -49,23 +49,23 @@ def extract_rubric(args: dict[str, Any]) -> dict[str, Any]:
 def plan_report(args: dict[str, Any]) -> dict[str, Any]:
     rubric = args["rubric"]
     return {
-        "page_limit": "no more than 5 pages",
+        "page_limit": "不超过 5 页",
         "sections": [
             {
-                "title": "Agent code repository",
-                "purpose": "Provide the GitHub repo and point to prompts, context, tools, and agent logic.",
+                "title": "Agent 代码仓库",
+                "purpose": "提供 GitHub 仓库，并说明 prompt、context、tool 和 Agent 逻辑的位置。",
             },
             {
-                "title": "Agent design",
-                "purpose": "Explain the main function, registered tools, and context integration in under 500 words.",
+                "title": "Agent 设计说明",
+                "purpose": "用不超过 500 字说明主要功能、已注册 tool 和 context 集成方式。",
             },
             {
-                "title": "Agent execution",
-                "purpose": "Show 3 to 4 screenshots from a real run and explain what each step proves.",
+                "title": "Agent 运行说明",
+                "purpose": "展示 3 到 4 张真实运行截图，并说明每一步证明了什么。",
             },
             {
-                "title": "AI-assisted development reflection",
-                "purpose": "Describe one concrete AI hurdle and the exact engineering fix.",
+                "title": "AI 辅助开发反思",
+                "purpose": "描述一个具体 AI 技术困难，以及对应的工程化解决方法。",
             },
         ],
         "rubric_alignment": {
@@ -118,35 +118,35 @@ def default_tools() -> dict[str, ToolDefinition]:
     tools = [
         ToolDefinition(
             name="read_context",
-            description="Read a local experiment context file.",
-            input_schema={"path": "Path to a UTF-8 markdown context file."},
+            description="读取本地实验 context 文件。",
+            input_schema={"path": "UTF-8 markdown context 文件路径。"},
             handler=read_context,
         ),
         ToolDefinition(
             name="extract_rubric",
-            description="Extract deadline, deliverables, evaluation, and reflection requirements.",
-            input_schema={"content": "Raw rubric text."},
+            description="提取截止时间、交付物、评分项和反思要求。",
+            input_schema={"content": "rubric 原始文本。"},
             handler=extract_rubric,
         ),
         ToolDefinition(
             name="plan_report",
-            description="Plan a short report that aligns with the rubric.",
-            input_schema={"rubric": "Rubric object returned by extract_rubric."},
+            description="根据 rubric 规划简短实验报告。",
+            input_schema={"rubric": "extract_rubric 返回的 rubric 对象。"},
             handler=plan_report,
         ),
         ToolDefinition(
             name="draft_reflection",
-            description="Draft a concise AI-use reflection around a specific technical hurdle.",
+            description="围绕一个具体技术困难生成 AI 使用反思草稿。",
             input_schema={
-                "hurdle": "Specific AI failure or limitation.",
-                "fix": "Exact engineering response used to resolve it.",
+                "hurdle": "具体 AI 失败点或能力限制。",
+                "fix": "解决该问题的具体工程化措施。",
             },
             handler=draft_reflection,
         ),
         ToolDefinition(
             name="validate_repository",
-            description="Check whether required repository files exist.",
-            input_schema={"root": "Repository root path."},
+            description="检查仓库中必需文件是否存在。",
+            input_schema={"root": "仓库根目录路径。"},
             handler=validate_repository,
         ),
     ]
